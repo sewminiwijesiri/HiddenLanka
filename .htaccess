@@ -1,0 +1,15 @@
+RewriteEngine On
+
+# Force removal of trailing slashes for non-directories
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} (.+)/$
+RewriteRule ^ %1 [R=301,L]
+
+# External redirect: /page.php to /page (GET requests only)
+RewriteCond %{THE_REQUEST} ^GET\s/([^.]+)\.php [NC]
+RewriteRule ^ /%1 [R=301,L]
+
+# Internal rewrite: resolve /page to /page.php
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ $1.php [L]
